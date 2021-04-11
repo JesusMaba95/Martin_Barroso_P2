@@ -161,9 +161,9 @@ DATA_MEM
 Mux_3_1 WriteData_mux
 (
 	.sel(ResultSrc_w),
-	.In0(Data_mem_out_w),
+	.In2(Data_mem_out_w),
 	.In1(ALUResult_w),
-	.In2(pc_plus_4_w),
+	.In0(pc_plus_4_w),
 	.Output(WriteData_w)
 
 );
