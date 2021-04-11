@@ -83,7 +83,7 @@ Mux_2_1 Pc_mux
 
 ProgramMemory
 #(
-	.MEMORY_DEPTH(37)
+	.MEMORY_DEPTH(50)
 )
 ROMProgramMemory
 (
