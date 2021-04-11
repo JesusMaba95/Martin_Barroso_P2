@@ -6,3 +6,11 @@ sub  s0,t2,t0
 mul  a0,t2,t1
 sw t0,0(gp)
 lw a1,0(gp)
+slli s1,t0,1
+srli s1,s1,1
+slti t0,zero,1
+slti a0,zero,0
+or a1,t0,zero
+addi t0,zero,0xF
+addi t1,zero,7
+and s0,t0,t1

@@ -77,8 +77,16 @@ always@(opcode,Funct3,Funct7,zero) begin
 	
 	if(opcode == R_type_ARITH) begin
 		case(Funct7)
-			7'b0000000: // ADD
-				AluOp_r = 3'b010;
+			7'b0000000: begin
+				if(Funct3 == 3'b000)// ADD
+				  AluOp_r = 3'b010;
+				else if (Funct3 == 3'b110) //OR
+				  AluOp_r = 3'b001;
+				else if (Funct3 == 3'b111)  //AND
+				  AluOp_r =  3'b000;
+				else
+			     AluOp_r = 3'b010;	
+			end
 			7'b0000001: // MUL
 			   AluOp_r = 3'b111;
 			7'b0100000: // sub
