@@ -85,6 +85,8 @@ always@(opcode,Funct3,Funct7,zero) begin
 				  AluOp_r = 3'b001;
 				else if (Funct3 == 3'b111)  //AND
 				  AluOp_r =  3'b000;
+				else if (Funct3 == 3'b101)  //slr
+				  AluOp_r =  3'b101;
 				else
 			     AluOp_r = 3'b010;	
 			end

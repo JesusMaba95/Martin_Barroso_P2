@@ -32,12 +32,12 @@ wire[(DATA_WIDTH-1):0]Addres_w;
 wire[(DATA_WIDTH-1):0]WriteData_w;
 wire Mem_Write_w;
 
-wire[(DATA_WIDTH-1):0]Ctrl2ID_ReadData_w;
+wire[(DATA_WIDTH-1):0]Ctrl2RAM_ReadData_w;
 wire[(DATA_WIDTH-1):0]Ctrl2Rx_ReadData_w;
 wire[(DATA_WIDTH-1):0]Ctrl2Rx_ready_ReadData_w;
-wire[(DATA_WIDTH-1):0]Ctrl2ID_Addres_w;
+wire[(DATA_WIDTH-1):0]Ctrl2RAM_Addres_w;
 wire[(DATA_WIDTH-1):0]CtrlWriteData_w;
-wire Ctrl2ID_Mem_Write_w;
+wire Ctrl2RAM_Mem_Write_w;
 wire Ctrl2Tx_enable_w;
 wire Ctrl2Tx_data_enable_w;
 wire Ctrl2Clean_rx_enable_w;
@@ -78,13 +78,13 @@ MemControl X
 	.WriteData_in(WriteData_w),
 	.MemWrite(Mem_Write_w),
 	.ReadData(ReadData_w),
-	.ID_Address(Ctrl2ID_Addres_w),
+	.RAM_Address(Ctrl2RAM_Addres_w),
 	.WriteData_out(CtrlWriteData_w),
-	.ID_MemWrite(Ctrl2ID_Mem_Write_w),
+	.RAM_MemWrite(Ctrl2RAM_Mem_Write_w),
 	.Tx_MemWrite(Ctrl2Tx_enable_w),
 	.Tx_data_Memwrite(Ctrl2Tx_data_enable_w),
 	.Clean_rx_Memwrite(Ctrl2Clean_rx_enable_w),
-	.ID_ReadData(Ctrl2ID_ReadData_w),
+	.RAM_ReadData(Ctrl2RAM_ReadData_w),
 	.Rx_ReadData(Ctrl2Rx_ReadData_w),
 	.Rx_ready_ReadData(Ctrl2Rx_ready_ReadData_w)
 );
@@ -134,13 +134,28 @@ Register clean_rx_i
   .DataOutput(clean_rx_w)
   
 );
+/*
 Instruction_Data_Memory ID_MEM
 (
-	.Address(Ctrl2ID_Addres_w),
+	.Address(Ctrl2RAM_Addres_w),
 	.WriteData(CtrlWriteData_w),
-	.MemWrite(Ctrl2ID_Mem_Write_w),
+	.MemWrite(Ctrl2RAM_Mem_Write_w),
 	.clk(clk_1hz),
-	.ReadData(Ctrl2ID_ReadData_w)
+	.ReadData(Ctrl2RAM_ReadData_w)
+);*/
+DataMemory
+#(
+	.DATA_WIDTH(32),
+	.MEMORY_DEPTH(32)
+)
+DATA_MEM
+(
+	.WriteData(CtrlWriteData_w),
+	.Address(Ctrl2RAM_Addres_w),
+	.MemWrite(Ctrl2RAM_Mem_Write_w),
+	.MemRead(1'b1),
+	.clk(clk_1hz),
+	.ReadData(Ctrl2RAM_ReadData_w)
 );
 UART Uart_i
 (	// Input Ports
