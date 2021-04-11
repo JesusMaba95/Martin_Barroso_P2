@@ -65,9 +65,9 @@ always@(opcode,Funct3,Funct7,zero) begin
 			ControlValues= 12'b0000000000;
 	endcase
 	if(opcode == B_type) begin
-		if (Funct3 == 3'b000)begin
+		if (Funct3 == 3'b000)begin//beq
 		  branch_r = zero;
-		end else if (Funct3 == 3'b001) begin
+		end else if (Funct3 == 3'b001) begin //bne
 		  branch_r = !zero;
 		end else begin
 		  branch_r = 1'b0;
@@ -108,6 +108,8 @@ always@(opcode,Funct3,Funct7,zero) begin
 			default:
 				AluOp_r   = 3'b010;
 		endcase	
+	end else if(opcode == B_type)begin
+	  AluOp_r = 3'b011;
 	end else begin
 	  AluOp_r = 3'b010;
 	end
