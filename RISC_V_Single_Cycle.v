@@ -33,6 +33,7 @@ wire [(DATA_WIDTH-1):0]SrcB_w;
 wire [(DATA_WIDTH-1):0]Data_mem_out_w;
 wire [(DATA_WIDTH-1):0]WriteData_w;
 wire [(DATA_WIDTH-1):0]pc_branch_w;
+wire [(DATA_WIDTH-1):0]Pc_Target_src_w;
 wire zero_w;
 wire branch_w;
 wire PcUpdate_w;
@@ -42,6 +43,7 @@ wire MemWrite_w;
 wire AluSrcB_w;
 wire AluSrcA_w;
 wire RegWrite_w;
+wire Pc_Target_Sel;
 wire [2:0]ImmSel_w;
 
 
@@ -119,7 +121,7 @@ ImmGen ImmGen_i
 Adder32bits
 Branch_Adder
 (
-	.Data0(pc_out_w),
+	.Data0(Pc_Target_src_w),
 	.Data1(imm_w),
 	.Result(pc_branch_w)
 );
@@ -182,7 +184,18 @@ Control Control_i
 	.ALUSrcA(AluSrcA_w),
 	.ALUSrcB(AluSrcB_w),
 	.RegWrite(RegWrite_w),
-	.ImmSrc(ImmSel_w)
+	.ImmSrc(ImmSel_w),
+	.Pc_Target_Src(Pc_Target_Sel)
 
 );
+
+Mux_2_1 PC_Target_Src_i
+(
+	.sel(Pc_Target_Sel),
+	.In0(pc_out_w),
+	.In1(ReadData1_w),
+	.Output(Pc_Target_src_w)
+
+);
+
 endmodule

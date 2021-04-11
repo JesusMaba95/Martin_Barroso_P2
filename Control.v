@@ -29,7 +29,8 @@ module Control
 	output ALUSrcB,
 	output ALUSrcA,
 	output RegWrite,
-	output /*reg*/ [2:0] ImmSrc
+	output /*reg*/ [2:0] ImmSrc,
+	output Pc_Target_Src
 	
 	//output Jump
 );
@@ -43,25 +44,25 @@ localparam B_type       = 7'h63;//BEQ,BNE
 localparam U_type       = 7'h17;//AUIPC
 
 
-reg [10:0] ControlValues;
+reg [11:0] ControlValues;
 reg [3:0] AluOp_r;
 reg branch_r;
 
 always@(opcode,Funct3,Funct7,zero) begin
 	case(opcode)												
-		R_type_ARITH:         ControlValues= 11'b0_1_XXX_0_0_01_0_0;
-		I_type_ARITH:         ControlValues= 11'b0_1_000_1_0_01_0_0;
-		I_type_LW:            ControlValues= 11'b0_1_000_1_0_10_0_0;
-		I_type_JALR:          ControlValues= 11'b0_0_000_1_1_XX_0_0;
-		S_type_SW:            ControlValues= 11'b0_0_001_1_1_XX_0_0;
-		J_type:               ControlValues= 11'b0_1_011_X_0_00_0_1;
-		B_type:               ControlValues= 11'b0_0_010_0_0_XX_1_0;
-		U_type:               ControlValues= 11'b1_1_100_1_0_01_0_0;
+		R_type_ARITH:         ControlValues= 12'b0_0_1_XXX_0_0_01_0_0;
+		I_type_ARITH:         ControlValues= 12'b0_0_1_000_1_0_01_0_0;
+		I_type_LW:            ControlValues= 12'b0_0_1_000_1_0_10_0_0;
+		I_type_JALR:          ControlValues= 12'b1_0_1_000_1_1_XX_0_1;
+		S_type_SW:            ControlValues= 12'b0_0_0_001_1_1_XX_0_0;
+		J_type:               ControlValues= 12'b0_0_1_011_X_0_00_0_1;
+		B_type:               ControlValues= 12'b0_0_0_010_0_0_XX_1_0;
+		U_type:               ControlValues= 12'b0_1_1_100_1_0_01_0_0;
 
 		
 		
 		default:
-			ControlValues= 11'b0000000000;
+			ControlValues= 12'b0000000000;
 	endcase
 	if(opcode == B_type) begin
 		if (Funct3 == 3'b000)begin
@@ -112,6 +113,7 @@ always@(opcode,Funct3,Funct7,zero) begin
 	end
 end
 
+assign Pc_Target_Src = ControlValues[11];
 assign ALUSrcA       = ControlValues[10];	
 assign RegWrite      = ControlValues[9];
 assign ImmSrc        = ControlValues[8:6];
