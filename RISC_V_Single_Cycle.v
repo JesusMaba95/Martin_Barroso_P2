@@ -17,13 +17,10 @@ module RISC_V_Single_Cycle
 	input clk,
 	input reset,
 	input rx,
-	//input [31:0]rx_ready,
-	//input [31:0]rx_data,
-	//output [31:0]clean_rx,
-	output clk_out,
-	output data_ready_out,
-	output clear_rx,
-	output ReadData,
+	//output clk_out,
+	//output data_ready_out,
+	//output clear_rx,
+	//output ReadData,
 	output tx
 );
 
@@ -50,9 +47,9 @@ wire [(DATA_WIDTH-1):0]tx_data_w;
 	
 	
 assign clk_out = clk_1hz;
-assign data_ready_out = Ctrl2Rx_ready_ReadData_w[0];
-assign clear_rx = !clean_rx_w[0];
-assign ReadData = ReadData_w[0];
+//assign data_ready_out = Ctrl2Rx_ready_ReadData_w[0];
+//assign clear_rx = !clean_rx_w[0];
+//assign ReadData = ReadData_w[0];
 Clock_Divider clk_divider
 (
 	// Input Ports
